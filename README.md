@@ -18,6 +18,12 @@ Go to Repos:
     npm install -g tfx-cli
     tfx extension init
 
+    webpack --mode development
+    npx tfx-cli extension create  --rev-version
+
+    webpack-dev-server --mode development
+
+
 ## For contributors
 
 Contributions are welcome, Feel free to create a Pull Request or Contact me to give your suggestions 

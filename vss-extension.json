@@ -10,7 +10,7 @@
     "categories": ["Azure Repos"],
     "repository": {
         "type": "git",
-        "uri": "https://github.com/xinyi-joffre/azure-devops-mermaid-renderer"
+        "uri": "https://github.com/daniecas/azure-devops-mermaid-viewer"
     },
     "icons": {
         "default": "doc/mermaid.png"
