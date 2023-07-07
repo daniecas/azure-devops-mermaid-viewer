@@ -1,0 +1,56 @@
+{
+    "manifestVersion": 1,
+    "id": "azure-devops-mermaid-viewer",
+    "publisher": "DanieleCas",
+    "baseUri": "https://localhost:44300",
+    "version": "1.0.4",
+    "name": "Mermaid Viewer",
+    "description": "Renders a Preview for your Mermaid Diagram in your Code Repos",
+    "public": false,
+    "categories": ["Azure Repos"],
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/xinyi-joffre/azure-devops-mermaid-renderer"
+    },
+    "icons": {
+        "default": "doc/mermaid.png"
+    },
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "mermaid-renderer",
+            "type": "ms.vss-code-web.content-renderer",
+            "description": "Shows a mermaid preview for .mmd files",
+            "targets": [
+                "ms.vss-code-web.content-renderer-collection"
+            ],
+            "properties": {
+                "name": "Daniele Extension",
+                "uri": "index.html",
+                "fileExtensions": [
+                    "mmd", "md"
+                ],
+                "mimeTypes": [
+                    "text/html"
+                ],
+                "defaultBehavior": "showRenderedContent",
+                "registeredObjectId": "mermaid_viewer"
+            }
+        }
+    ],
+    "files": [
+        {
+            "path": "index.html",
+            "addressable": true
+        },
+        {
+            "path": "node_modules/azure-devops-extension-sdk",
+            "addressable": true,
+            "packagePath": "lib"
+        }
+    ]
+}
