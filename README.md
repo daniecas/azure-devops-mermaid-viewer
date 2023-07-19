@@ -9,8 +9,8 @@ This Azure DevOps Extension allows to render your .mmd files on your Azure DevOp
 Install this extension to your Azure DevOps Organization.
 
 Go to Repos:
-- in Files: if you select a .mmd file you can find a new Preview tab
-- in Pull Requests: if you select a .mmd file you can find a Raw Content/Preiew toggle button
+- in Files: if you select a Mermaid (`.mmd`) file you can find a new Preview tab
+- in Pull Requests: if you select a Mermaid (`.mmd`) file you can find a Raw Content/Preview toggle button
 
 ## Run Locally
 
@@ -22,6 +22,8 @@ Go to Repos:
     npx tfx-cli extension create  --rev-version
 
     webpack-dev-server --mode development
+
+    (access to firefox to debug)
 
 
 ## For contributors

@@ -8,6 +8,8 @@ await (async function() : Promise<void> {
 
     await SDK.ready();
 
+    console.log("start");
+
     SDK.register("mermaid_viewer", function (context) {
             return mermaidViewer;
     });
