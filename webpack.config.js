@@ -17,12 +17,6 @@ const config = {
     output: {
         path: path.resolve(__dirname, 'dist'),
     },
-    devServer: {
-        open: true,
-        host: 'localhost',
-        https: true,
-        port: 44300
-    },
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html',
@@ -58,10 +52,17 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+        config.devtool = 'source-map';
         
     } else {
         config.mode = 'development';
+
+        config.devServer = {
+            open: true,
+            host: 'localhost',
+            https: true,
+            port: 44300
+        };
     }
     return config;
 };

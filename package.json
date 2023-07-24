@@ -11,14 +11,20 @@
     "watch": "webpack --watch",
     "serve": "webpack serve"
   },
-  "keywords": ["azure", "devops", "extension", "mermaid"],
+  "keywords": [
+    "azure",
+    "devops",
+    "extension",
+    "mermaid"
+  ],
   "author": "DanieleCas",
   "license": "ISC",
   "dependencies": {
     "azure-devops-extension-sdk": "^3.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "global": "^4.4.0",
-    "mermaid": "^10.2.4"
+    "mermaid": "^10.2.4",
+    "webpack-dev-server": "^4.15.1"
   },
   "devDependencies": {
     "@webpack-cli/generators": "^3.0.7",
@@ -31,7 +37,6 @@
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
     "webpack": "^5.88.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-cli": "^5.1.4"
   }
 }

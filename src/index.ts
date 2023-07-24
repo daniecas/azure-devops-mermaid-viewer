@@ -1,6 +1,8 @@
 import * as SDK from "azure-devops-extension-sdk";
 import Mermaid from "mermaid";
 
+console.log("loading...");
+
 await (async function() : Promise<void> {
 
     SDK.init({ loaded: false })

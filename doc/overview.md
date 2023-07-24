@@ -17,6 +17,10 @@ The extension is based on Mermaid 10.2.4 version, so potentially breaking change
 
 ## Feedback
 
-Please let us know how the extension can be improved! Contributions are also welcome!
+Please let me know how the extension can be improved! Contributions are also welcome!
 
 - Create an issue in [GitHub](https://github.com/daniecas/azure-devops-mermaid-viewer/issues)
+
+
+
+<a href="https://www.flaticon.com/free-icons/mermaid" title="mermaid icons">Mermaid icons created by Freepik - Flaticon</a>

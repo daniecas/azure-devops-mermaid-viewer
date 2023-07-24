@@ -19,9 +19,14 @@ Go to Repos:
     tfx extension init
 
     webpack --mode development
+
+    to create a new version:
     npx tfx-cli extension create  --rev-version
 
-    webpack-dev-server --mode development
+    to create a new version of a dev extension:
+    npx tfx-cli extension create --rev-version --overrides-file configs/dev.json
+
+    npx webpack-dev-server --mode development
 
     (access to firefox to debug)
 
