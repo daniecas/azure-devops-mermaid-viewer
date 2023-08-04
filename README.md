@@ -14,32 +14,34 @@ Go to Repos:
 
 ## Run Locally
 
-    npm install
-    npm install -g tfx-cli
-    tfx extension init
+To Run Locally:
+- install npm packages: `npm install`
+- install tfx command line: `npm install -g tfx-cli`
 
-    webpack --mode development
+<br/>
+To Debug Code:
 
-    to create a new version:
-    npx tfx-cli extension create  --rev-version
+- Create a new package for development purpose:
+    `npx tfx-cli extension create --rev-version --overrides-file configs/dev.json`
 
-    to create a new version of a dev extension:
-    npx tfx-cli extension create --rev-version --overrides-file configs/dev.json
+- Deploy it on Azure DevOps Extension Marketplace: 
+  https://marketplace.visualstudio.com/manage/publishers/danielecas
 
-    npx webpack-dev-server --mode development
+- And than run local code:
+    `npx webpack-dev-server --mode development`
 
-    (access to firefox to debug)
+- Access to firefox to debug you extension
 
+## Production Deployment
+
+To create a new package for production deployment:
+    `npx tfx-cli extension create --rev-version --env mode=production`
 
 ## For contributors
 
 Contributions are welcome, Feel free to create a Pull Request or Contact me to give your suggestions 
 
-```mermaid
-sequenceDiagram
-    Alice ->> Bob: Hello Bob, how are you?
-    Bob-->Alice: Hi!
-```
 
 
+<br/><br/>
 <a href="https://www.flaticon.com/free-icons/mermaid" title="mermaid icons">Mermaid icons created by Freepik - Flaticon</a>

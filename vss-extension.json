@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "azure-devops-mermaid-viewer",
     "publisher": "DanieleCas",
-    "version": "1.0.12",
+    "version": "1.0.22",
     "name": "Mermaid Viewer",
     "description": "Renders a Preview for your Mermaid Diagram in your Code Repos",
     "public": true,
@@ -29,7 +29,7 @@
             ],
             "properties": {
                 "name": "Daniele Extension",
-                "uri": "index.html",
+                "uri": "dist/index.html",
                 "fileExtensions": [
                     "mmd", "md"
                 ],
@@ -52,9 +52,8 @@
             "addressable": true
         },
         {
-            "path": "node_modules/azure-devops-extension-sdk",
-            "addressable": true,
-            "packagePath": "lib"
+            "path": "dist",
+            "addressable": true
         }
     ]
 }

@@ -13,7 +13,6 @@ const stylesHandler = 'style-loader';
 
 const config = {
     entry: './src/index.ts',
-    devtool: "inline-source-map",
     output: {
         path: path.resolve(__dirname, 'dist'),
     },
@@ -56,6 +55,7 @@ module.exports = () => {
         
     } else {
         config.mode = 'development';
+        config.devtool = "inline-source-map";
 
         config.devServer = {
             open: true,
