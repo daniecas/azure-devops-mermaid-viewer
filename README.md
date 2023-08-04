@@ -3,6 +3,8 @@
 ## Overview
 
 This Azure DevOps Extension allows to render your .mmd files on your Azure DevOps Repos.
+Click [here](https://marketplace.visualstudio.com/items?itemName=DanieleCas.azure-devops-mermaid-viewer) to install.
+
 
 ## Usage
 
