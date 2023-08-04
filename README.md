@@ -10,7 +10,13 @@ Install this extension to your Azure DevOps Organization.
 
 Go to Repos:
 - in Files: if you select a Mermaid (`.mmd`) file you can find a new Preview tab
+  
+  ![Preview Diagram](doc\preview_diagram.png)
+
 - in Pull Requests: if you select a Mermaid (`.mmd`) file you can find a Raw Content/Preview toggle button
+
+  ![Preview Diagram](doc\pr_preview_diagram.png)
+
 
 ## Run Locally
 
