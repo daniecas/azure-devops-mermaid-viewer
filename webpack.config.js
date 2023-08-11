@@ -62,6 +62,8 @@ module.exports = () => {
             host: 'localhost',
             https: true,
             port: 44300
+
+            //static: './dist',
         };
     }
     return config;

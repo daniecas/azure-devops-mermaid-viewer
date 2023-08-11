@@ -2,5 +2,7 @@
     "id": "azure-devops-mermaid-viewer-dev", 
     "name": "Mermaid Viewer (dev)",
     "public": false, 
-    "baseUri": "https://localhost:44300"
+    "baseUri": "https://localhost:44300",
+    "contributions:0:properties:uri": "index.html",
+    "contributions:0::properties::uri": "index.html"
 }
