@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "azure-devops-mermaid-viewer",
     "publisher": "DanieleCas",
-    "version": "1.0.29",
+    "version": "1.0.36",
     "name": "Mermaid Viewer",
     "description": "Renders a Preview for your Mermaid Diagram in your Code Repos",
     "public": true,
@@ -17,28 +17,6 @@
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
-        }
-    ],
-    "contributions": [
-        {
-            "id": "mermaid-renderer",
-            "type": "ms.vss-code-web.content-renderer",
-            "description": "Shows a mermaid preview for .mmd files",
-            "targets": [
-                "ms.vss-code-web.content-renderer-collection"
-            ],
-            "properties": {
-                "name": "Daniele Extension",
-                "uri": "dist/index.html",
-                "fileExtensions": [
-                    "mmd", "md"
-                ],
-                "mimeTypes": [
-                    "text/html"
-                ],
-                "defaultBehavior": "showRenderedContent",
-                "registeredObjectId": "mermaid_viewer"
-            }
         }
     ],
     "content": {

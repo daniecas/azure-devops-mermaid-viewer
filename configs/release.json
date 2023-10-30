@@ -1,8 +1,4 @@
 {
-    "id": "azure-devops-mermaid-viewer-dev", 
-    "name": "Mermaid Viewer (dev)",
-    "public": false, 
-    "baseUri": "https://localhost:44300",
     "contributions": [
         {
             "id": "mermaid-renderer",
@@ -13,7 +9,7 @@
             ],
             "properties": {
                 "name": "Daniele Extension",
-                "uri": "index.html",
+                "uri": "dist/index.html",
                 "fileExtensions": [
                     "mmd", "md"
                 ],

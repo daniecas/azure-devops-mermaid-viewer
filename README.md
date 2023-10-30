@@ -43,7 +43,7 @@ To Debug Code:
 ## Production Deployment
 
 To create a new package for production deployment:
-    `npx tfx-cli extension create --rev-version --env mode=production`
+    `npx tfx-cli extension create --rev-version --env mode=production --overrides-file configs/release.json`
 
 ## For contributors
 
