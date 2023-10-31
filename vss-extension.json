@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "azure-devops-mermaid-viewer",
     "publisher": "DanieleCas",
-    "version": "1.0.36",
+    "version": "1.0.39",
     "name": "Mermaid Viewer",
     "description": "Renders a Preview for your Mermaid Diagram in your Code Repos",
     "public": true,
@@ -10,6 +10,23 @@
     "repository": {
         "type": "git",
         "uri": "https://github.com/daniecas/azure-devops-mermaid-viewer"
+    },
+    "links": {
+        "getstarted": {
+            "uri": "https://github.com/daniecas/azure-devops-mermaid-viewer/tree/main#usage"
+        },
+        "learn": {
+            "uri": "https://github.com/daniecas/azure-devops-mermaid-viewer/tree/main#run-locally"
+        },
+        "support": {
+            "uri": "https://github.com/daniecas/azure-devops-mermaid-viewer/tree/main#for-contributors"
+        },
+        "issues": {
+            "uri": "https://github.com/daniecas/azure-devops-mermaid-viewer/tree/main#for-contributors"
+        },
+        "privacypolicy": {
+            "uri": "https://github.com/daniecas/azure-devops-mermaid-viewer/blob/main/Privacy.md"
+        }
     },
     "icons": {
         "default": "doc/mermaid.png"
@@ -22,7 +39,10 @@
     "content": {
         "details": {
           "path": "doc/overview.md"
-        }
+        },
+        "license": {
+            "path": "LICENSE"
+          }
     },
     "files": [
         {
@@ -31,6 +51,10 @@
         },
         {
             "path": "dist",
+            "addressable": true
+        },
+        {
+            "path": "doc",
             "addressable": true
         }
     ]
