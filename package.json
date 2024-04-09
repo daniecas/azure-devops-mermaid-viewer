@@ -21,9 +21,11 @@
   "license": "ISC",
   "dependencies": {
     "azure-devops-extension-sdk": "^3.1.2",
+    "commonmark": "^0.31.0",
     "copy-webpack-plugin": "^11.0.0",
     "global": "^4.4.0",
     "mermaid": "^10.2.4",
+    "raw-loader": "^4.0.2",
     "webpack-dev-server": "^4.15.1"
   },
   "devDependencies": {
