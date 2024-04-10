@@ -1,10 +1,11 @@
 //import testmd from './markdown-test.md'
 //import test_md from './markdown-test'
-import markdownMermaidViewer from '../viewer'
+import MermaidViewer from '../viewer'
 
 export default {
 	render: function () {
-		markdownMermaidViewer.renderContent(testmmd, null);
+        const mermaidViewer = new MermaidViewer();
+		mermaidViewer.renderContent(testmd, null);
 	}
 }
 
@@ -19,6 +20,14 @@ sequenceDiagram
 \`\`\`
 
 ## Mermaid Diagram 2
+
+:::mermaid
+sequenceDiagram
+    Alice ->> Bob: Hello Bob, how are you?
+    Bob-->Alice: Hi!
+:::
+
+## Mermaid Diagram 3
 
 :::mermaid
 sequenceDiagram

@@ -2,11 +2,19 @@
     "manifestVersion": 1,
     "id": "azure-devops-mermaid-viewer",
     "publisher": "DanieleCas",
-    "version": "1.0.39",
+    "version": "1.0.45",
     "name": "Mermaid Viewer",
     "description": "Renders a Preview for your Mermaid Diagram in your Code Repos",
     "public": true,
     "categories": ["Azure Repos"],
+    "tags": [
+        "mermaid",
+        "viewer",
+        "diagrams",
+        "render",
+        "markdown",
+        "preview"
+    ],
     "repository": {
         "type": "git",
         "uri": "https://github.com/daniecas/azure-devops-mermaid-viewer"

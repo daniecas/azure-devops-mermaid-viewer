@@ -1,13 +1,14 @@
 import * as SDK from "azure-devops-extension-sdk";
 import Mermaid from "mermaid";
-import markdownMermaidViewer from './viewer'
+import MermaidViewer from './viewer'
 import test from './test/test'
 
 console.log("loading...");
 
+const isTest = false;
 const isProduction = process.env.NODE_ENV == 'production'
 
-if (isProduction)
+if (!isTest)
 {
 
     await (async function() : Promise<void> {
@@ -20,27 +21,13 @@ if (isProduction)
         console.log("start");
 
         SDK.register("mermaid_viewer", function (context) {
-            //return mermaidViewer;
-            return markdownMermaidViewer;
+            console.log(context);
+
+            const mermaidViewer = new MermaidViewer();
+            return mermaidViewer;
         });
 
         SDK.notifyLoadSucceeded();
-
-
-        var mermaidViewer = (function () {
-            "use strict";
-            return {
-                renderContent: function(rawContent, options) {
-                    var rendered = document.getElementById('viewer-content-display');
-
-                    var graphDefinition = rawContent;
-                    Mermaid.mermaidAPI.render('graphDiv', graphDefinition).then(({ svg, bindFunctions }) => {
-                        rendered.innerHTML = svg;
-                        bindFunctions?.(rendered);
-                    });
-                }
-            };
-        }());
 
     }());
 }
