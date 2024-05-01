@@ -6,7 +6,7 @@ console.log("loading...");
 await (async function() : Promise<void> {
 
     SDK.init({ loaded: false })
-    Mermaid.initialize({ startOnLoad: false });
+    Mermaid.initialize({ securityLevel: 'loose', startOnLoad: false });
 
     await SDK.ready();
 
