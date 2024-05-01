@@ -42,6 +42,9 @@ To Debug Code:
 
 ## Production Deployment
 
+To build a new dist package:
+    `npm run build`
+
 To create a new package for production deployment:
     `npx tfx-cli extension create --rev-version --env mode=production --overrides-file configs/release.json`
 
