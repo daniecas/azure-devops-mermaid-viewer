@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "azure-devops-mermaid-viewer",
     "publisher": "DanieleCas",
-    "version": "1.0.51",
+    "version": "1.0.55",
     "name": "Mermaid Viewer",
     "description": "Renders a Preview for your Mermaid Diagram in your Code Repos",
     "public": true,

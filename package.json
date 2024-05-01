@@ -20,7 +20,7 @@
   "author": "DanieleCas",
   "license": "ISC",
   "dependencies": {
-    "azure-devops-extension-sdk": "^3.1.2",
+    "azure-devops-extension-sdk": "^3.1.3",
     "copy-webpack-plugin": "^11.0.0",
     "global": "^4.4.0",
     "mermaid": "^10.2.4",
