@@ -64,8 +64,10 @@ module.exports = () => {
         config.devServer = {
             open: true,
             host: 'localhost',
-            https: true,
-            port: 44300
+            port: 44300,
+            server: {
+                type: "https"
+            }
 
             //static: './dist',
         };
