@@ -11,14 +11,16 @@ Click [here](https://marketplace.visualstudio.com/items?itemName=DanieleCas.azur
 Install this extension to your Azure DevOps Organization.
 
 Go to Repos:
-- in Files: if you select a Mermaid (`.mmd`) file you can find a new Preview tab
+- in Files: if you select a Mermaid (`.mmd` or `.md`) file you can find a new Preview tab
   
   ![Preview Diagram](doc/code_preview_diagram.png)
 
-- in Pull Requests: if you select a Mermaid (`.mmd`) file you can find a Raw Content/Preview toggle button
+- in Pull Requests: if you select a Mermaid (`.mmd` or `.md`) file you can find a Raw Content/Preview toggle button
 
   ![Preview Diagram](doc/pr_preview_diagram.png)
 
+
+note: in `.md` extension you need to use  `:::mermaid` convention to avoid conflicts with markdown statements, you can find an example in src/test/markdown-test.md Mermaid Diagram 2
 
 ## Run Locally
 

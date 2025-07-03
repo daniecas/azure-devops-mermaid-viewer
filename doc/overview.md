@@ -2,23 +2,25 @@
 
 Get a preview of your [mermaid](https://mermaid-js.github.io/mermaid/) diagrams in the Azure DevOps Repo.
 
-This extension currently only works with `.mmd` files.
+This extension currently works with `.mmd` and `.md` files.
 
 ## Usage
 
 Install this extension to your Azure DevOps Organization.
 
 Go to Repos:
-- in Files: if you select a Mermaid (`.mmd`) file you can find a new Preview tab
+- in Files: if you select a Mermaid (`.mmd` or `.md`) file you can find a new Preview tab
   
-  ![Code: Preview Diagram](./code_preview_diagram.png)
+  ![Code: Preview Diagram](./doc/code_preview_diagram.png)
 
-- in Pull Requests: if you select a Mermaid (`.mmd`) file you can find a Raw Content/Preview toggle button
+- in Pull Requests: if you select a Mermaid (`.mmd` or `.md`) file you can find a Raw Content/Preview toggle button
   
-  ![Pull Request: Preview Diagram](./pr_preview_diagram.png)
+  ![Pull Request: Preview Diagram](./doc/pr_preview_diagram.png)
 
 
-The extension is based on Mermaid 10.2.4 version, so potentially breaking changes will not affect your stable features (unfortunately this is happened with others extensions) 
+note: in `.md` extension you need to use  `:::mermaid` convention to avoid conflicts with markdown statements, you can find an example in src/test/markdown-test.md Mermaid Diagram 2
+
+The extension is based on Mermaid 11.8.0 version, so potentially breaking changes will not affect your stable features (unfortunately this is happened with others extensions) 
 
 ## Feedback
 
