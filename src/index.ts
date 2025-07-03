@@ -1,37 +1,35 @@
 import * as SDK from "azure-devops-extension-sdk";
 import Mermaid from "mermaid";
+import MermaidViewer from './viewer'
+import test from './test/test'
 
 console.log("loading...");
 
-await (async function() : Promise<void> {
+const isTest = false;
+const isProduction = process.env.NODE_ENV == 'production'
 
-    SDK.init({ loaded: false })
-    Mermaid.initialize({ securityLevel: 'loose', startOnLoad: false });
+if (!isTest)
+{
 
-    await SDK.ready();
+    await (async function() : Promise<void> {
 
-    console.log("start");
+        SDK.init({ loaded: false })
+        Mermaid.initialize({ securityLevel: 'loose', startOnLoad: false });
 
-    SDK.register("mermaid_viewer", function (context) {
+        await SDK.ready();
+
+        console.log("start");
+
+        SDK.register("mermaid_viewer", function (context) {
+            console.log(context);
+
+            const mermaidViewer = new MermaidViewer();
             return mermaidViewer;
-    });
+        });
 
-    SDK.notifyLoadSucceeded();
+        SDK.notifyLoadSucceeded();
 
-
-    var mermaidViewer = (function () {
-        "use strict";
-        return {
-            renderContent: function(rawContent, options) {
-                var rendered = document.getElementById('viewer-content-display');
-
-                var graphDefinition = rawContent;
-                Mermaid.mermaidAPI.render('graphDiv', graphDefinition).then(({ svg, bindFunctions }) => {
-                    rendered.innerHTML = svg;
-                    bindFunctions?.(rendered);
-                });
-            }
-        };
     }());
-
-}());
+}
+else
+    test.render();
