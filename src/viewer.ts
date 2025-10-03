@@ -16,7 +16,7 @@ export default class MermaidViewer {
         return rawContent;
     }
 
-    public renderContent(rawContent : string, options) {
+    public async renderContent(rawContent : string, options) {
 
         var reader = new Parser();
         var writer = new HtmlRenderer();
@@ -48,10 +48,35 @@ export default class MermaidViewer {
         }
         else
         {
+            console.log("ready to render raw mermaid (2)");
+
             var graphDefinition = rawContent;
-            Mermaid.mermaidAPI.render('graphDiv', graphDefinition).then(({ svg, bindFunctions }) => {
+
+            Mermaid.parseError = function (err, hash) {
+                console.error("parse error");
+                //container.textContent = rawContent;
+
+                // On render failure fallback to showing original text as markdown code
+                const fallbackMd = '```mermaid\n' + graphDefinition + '\n```';
+                const parsed = reader.parse(fallbackMd);
+                const html = writer.render(parsed);
+                container.innerHTML = html;
+            };
+
+            // validate diagram before rendering
+            await Mermaid.parse(graphDefinition);
+
+            console.log("I'm going to render");
+
+            Mermaid.render('graphDiv', graphDefinition).then((result: any) => {
+                const svg = result.svg ?? result;
+                const bindFunctions = result.bindFunctions ?? result?.bindFunctions;
                 container.innerHTML = svg;
-                bindFunctions?.(container);
+                if (typeof bindFunctions === 'function') {
+                    bindFunctions(container);
+                }
+            }).catch((err: any) => {
+                console.error('Mermaid render failed:', err);
             });
         }
     }
