@@ -20,7 +20,7 @@ Go to Repos:
 
 note: in `.md` extension you need to use  `:::mermaid` convention to avoid conflicts with markdown statements, you can find an example in src/test/markdown-test.md Mermaid Diagram 2
 
-The extension is based on Mermaid 11.8.0 version, so potentially breaking changes will not affect your stable features (unfortunately this is happened with others extensions) 
+The extension is based on Mermaid 11.12.0 version, so potentially breaking changes will not affect your stable features (unfortunately this is happened with others extensions) 
 
 ## Feedback
 
