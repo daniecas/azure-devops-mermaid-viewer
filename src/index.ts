@@ -2,6 +2,7 @@ import * as SDK from "azure-devops-extension-sdk";
 import Mermaid from "mermaid";
 import MermaidViewer from './viewer'
 import test from './test/test'
+import 'github-markdown-css/github-markdown.css';
 
 console.log("loading...");
 

@@ -57,6 +57,8 @@ export default class MermaidViewer {
                 // On parse failure: render the original text as markdown so headers and formatting show
                 const parsed = reader.parse(graphDefinition);
                 const html = writer.render(parsed);
+                // apply markdown styling
+                container.classList.add('markdown-body');
                 container.innerHTML = html;
                 // remove the style applied to body, I don't want it in fallback case
                 try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
@@ -80,6 +82,8 @@ export default class MermaidViewer {
                 // On render failure: render the original text as markdown so headers and formatting show
                 const parsed = reader.parse(graphDefinition);
                 const html = writer.render(parsed);
+                // apply markdown styling
+                container.classList.add('markdown-body');
                 container.innerHTML = html;
                 // remove the style applied to body, I don't want it in fallback case
                 try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
