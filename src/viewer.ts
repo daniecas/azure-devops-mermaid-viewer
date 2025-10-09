@@ -53,12 +53,13 @@ export default class MermaidViewer {
             var graphDefinition = rawContent;
 
             Mermaid.parseError = function (err, hash) {
-                console.error("parse error");
-                // On render failure fallback to showing original text as markdown code
-                const fallbackMd = '```mermaid\n' + graphDefinition + '\n```';
-                const parsed = reader.parse(fallbackMd);
+                console.warn("parse error, maybe the syntax is invalid or not contains a mermaid diagram?", err, hash);
+                // On parse failure: render the original text as markdown so headers and formatting show
+                const parsed = reader.parse(graphDefinition);
                 const html = writer.render(parsed);
                 container.innerHTML = html;
+                // remove the style applied to body, I don't want it in fallback case
+                try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
             };
 
             // validate diagram before rendering
@@ -75,12 +76,13 @@ export default class MermaidViewer {
                 }
             }).catch((err: any) => {
                 console.error('Mermaid render failed:', err);
-                
-                // On render failure fallback to showing original text as markdown code
-                const fallbackMd = '```mermaid\n' + graphDefinition + '\n```';
-                const parsed = reader.parse(fallbackMd);
+
+                // On render failure: render the original text as markdown so headers and formatting show
+                const parsed = reader.parse(graphDefinition);
                 const html = writer.render(parsed);
                 container.innerHTML = html;
+                // remove the style applied to body, I don't want it in fallback case
+                try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
             });
         }
     }
