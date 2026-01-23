@@ -1,7 +1,42 @@
 import { Parser, HtmlRenderer } from "commonmark"
 import Mermaid from "mermaid";
+import * as SDK from 'azure-devops-extension-sdk';
 
 export default class MermaidViewer {
+
+    private _resizeObserverInited: boolean = false;
+
+    private requestResize() {
+        try {
+            // If Azure DevOps SDK is available, use it to resize the parent frame
+            if (SDK && typeof (SDK.resize) === 'function') {
+                // Try to set a height large enough; SDK.resize will clamp as needed
+                SDK.resize(800, 1200);
+                return;
+            }
+        }
+        catch (_) {}
+
+        // Fallback: post a message to parent to request resize (host can listen)
+        try {
+            const height = document.body.scrollHeight || document.documentElement.scrollHeight;
+            window.parent.postMessage({ type: 'resize', height }, '*');
+        } catch (_) {}
+
+        // Setup a MutationObserver once so we notify on content changes
+        if (!this._resizeObserverInited) {
+            try {
+                const observer = new MutationObserver(() => {
+                    try {
+                        const h = document.body.scrollHeight || document.documentElement.scrollHeight;
+                        window.parent.postMessage({ type: 'resize', height: h }, '*');
+                    } catch (_) {}
+                });
+                observer.observe(document.getElementById('viewer-content-display') || document.body, { childList: true, subtree: true, characterData: true });
+                this._resizeObserverInited = true;
+            } catch (_) {}
+        }
+    }
 
     private getCleanedContent(rawContent : string) : string
     {
@@ -53,13 +88,15 @@ export default class MermaidViewer {
             var graphDefinition = rawContent;
 
             Mermaid.parseError = function (err, hash) {
-                console.warn("parse error, maybe the syntax is invalid or not contains a mermaid diagram?", err, hash);
+                console.warn("parse error, maybe the syntax is invalid or not contains a mermaid diagram", err, hash);
                 // On parse failure: render the original text as markdown so headers and formatting show
                 const parsed = reader.parse(graphDefinition);
                 const html = writer.render(parsed);
                 // apply markdown styling
                 container.classList.add('markdown-body');
                 container.innerHTML = html;
+                // request host to resize the frame so content is fully visible
+                //this.requestResize();
                 // remove the style applied to body, I don't want it in fallback case
                 try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
             };
@@ -85,6 +122,8 @@ export default class MermaidViewer {
                 // apply markdown styling
                 container.classList.add('markdown-body');
                 container.innerHTML = html;
+                // request host to resize the frame so content is fully visible
+                this.requestResize();
                 // remove the style applied to body, I don't want it in fallback case
                 try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
             });
