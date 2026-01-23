@@ -5,7 +5,7 @@ import MermaidViewer from '../viewer'
 export default {
 	render: function () {
         const mermaidViewer = new MermaidViewer();
-		mermaidViewer.renderContent(no_mermaid, null);
+		mermaidViewer.renderContent(testmd, null);
 	}
 }
 

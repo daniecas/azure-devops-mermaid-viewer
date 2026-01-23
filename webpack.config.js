@@ -20,6 +20,12 @@ const config = {
         new HtmlWebpackPlugin({
             template: 'index.html',
         }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'node_modules/github-markdown-css/github-markdown.css', to: 'styles/github-markdown.css' },
+                { from: 'src/styles/markdown-theme.css', to: 'styles/markdown-theme.css' }
+            ]
+        }),
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],

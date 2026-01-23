@@ -1,7 +1,70 @@
 import { Parser, HtmlRenderer } from "commonmark"
 import Mermaid from "mermaid";
+import * as SDK from 'azure-devops-extension-sdk';
 
 export default class MermaidViewer {
+
+    private _autoResizeInited: boolean = false;
+    private _resizePending: boolean = false;
+
+    private requestResize(container?: HTMLElement | null) {
+
+        if (this._resizePending) return;
+        this._resizePending = true;
+
+        const doResize = () => {
+            this._resizePending = false;
+
+            const target = container || document.getElementById('viewer-content-display') || document.body;
+            const docEl = document.documentElement;
+
+            const width = Math.max(
+                docEl?.scrollWidth ?? 0,
+                docEl?.clientWidth ?? 0,
+                target?.scrollWidth ?? 0,
+                target?.clientWidth ?? 0,
+                1,
+            );
+
+            const height = Math.max(
+                docEl?.scrollHeight ?? 0,
+                docEl?.clientHeight ?? 0,
+                target?.scrollHeight ?? 0,
+                target?.clientHeight ?? 0,
+                1,
+            );
+
+            try {
+                if (SDK && typeof (SDK.resize) === 'function') {
+
+                    if (window.parent !== window)
+                        SDK.resize(width, height);
+                }
+            } catch (_) { }
+        };
+
+        // Wait a tick so layout/SVG sizes settle.
+        try {
+            requestAnimationFrame(() => setTimeout(doResize, 0));
+        } catch (_) {
+            setTimeout(doResize, 0);
+        }
+    }
+
+    private initAutoResize(container: HTMLElement) {
+        if (this._autoResizeInited) return;
+        this._autoResizeInited = true;
+
+        try {
+            const mutationObserver = new MutationObserver(() => this.requestResize(container));
+            mutationObserver.observe(container, { childList: true, subtree: true, characterData: true, attributes: true });
+        } catch (_) { }
+
+        // First sizing once the page is fully loaded.
+        try {
+            window.addEventListener('load', () => this.requestResize(container));
+        } catch (_) { }
+    }
 
     private getCleanedContent(rawContent : string) : string
     {
@@ -25,9 +88,14 @@ export default class MermaidViewer {
         console.log(rawContent);
 
         var container = document.getElementById('viewer-content-display');
+        if (!container) {
+            throw new Error("Missing #viewer-content-display container");
+        }
+
+        this.initAutoResize(container);
 
         var rawContentCleaned = this.getCleanedContent(rawContent); 
-
+  
         if (rawContentCleaned.includes('```'))
         {
             var parsed = reader.parse(rawContentCleaned);
@@ -44,7 +112,15 @@ export default class MermaidViewer {
                 p.classList.add('mermaid')
             })
 
-            Mermaid.run()
+            try {
+                // Mermaid.run can be async depending on version
+                const runResult: any = Mermaid.run();
+                if (runResult && typeof runResult.then === 'function') {
+                    await runResult;
+                }
+            } finally {
+                this.requestResize(container);
+            }
         }
         else
         {
@@ -52,13 +128,18 @@ export default class MermaidViewer {
 
             var graphDefinition = rawContent;
 
-            Mermaid.parseError = function (err, hash) {
-                console.error("parse error");
-                // On render failure fallback to showing original text as markdown code
-                const fallbackMd = '```mermaid\n' + graphDefinition + '\n```';
-                const parsed = reader.parse(fallbackMd);
+            Mermaid.parseError = (err, hash) => {
+                console.warn("parse error, maybe the syntax is invalid or not contains a mermaid diagram", err, hash);
+                // On parse failure: render the original text as markdown so headers and formatting show
+                const parsed = reader.parse(graphDefinition);
                 const html = writer.render(parsed);
+                // apply markdown styling
+                container.classList.add('markdown-body');
                 container.innerHTML = html;
+                // request host to resize the frame so content is fully visible
+                this.requestResize(container);
+                // remove the style applied to body, I don't want it in fallback case
+                try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
             };
 
             // validate diagram before rendering
@@ -73,15 +154,24 @@ export default class MermaidViewer {
                 if (typeof bindFunctions === 'function') {
                     bindFunctions(container);
                 }
+                this.requestResize(container);
             }).catch((err: any) => {
                 console.error('Mermaid render failed:', err);
-                
-                // On render failure fallback to showing original text as markdown code
-                const fallbackMd = '```mermaid\n' + graphDefinition + '\n```';
-                const parsed = reader.parse(fallbackMd);
+
+                // On render failure: render the original text as markdown so headers and formatting show
+                const parsed = reader.parse(graphDefinition);
                 const html = writer.render(parsed);
+                // apply markdown styling
+                container.classList.add('markdown-body');
                 container.innerHTML = html;
+                // request host to resize the frame so content is fully visible
+                this.requestResize(container);
+                // remove the style applied to body, I don't want it in fallback case
+                try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
             });
         }
+
+        // Also resize once at the end of renderContent.
+        this.requestResize(container);
     }
 }

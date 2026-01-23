@@ -1,0 +1,45 @@
+/* Let the host page background show through */
+.markdown-body {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+/* Slightly muted code background on light themes */
+.markdown-body pre,
+.markdown-body code {
+  background: rgba(27,31,35,0.04);
+  color: inherit;
+}
+
+/* Dark-mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .markdown-body {
+    color: #c9d1d9 !important;
+  }
+
+  .markdown-body a {
+    color: #58a6ff !important;
+  }
+
+  .markdown-body pre,
+  .markdown-body code {
+    background: rgba(110,118,129,0.12) !important;
+    color: #e6edf3 !important;
+  }
+
+  .markdown-body blockquote {
+    color: #8b949e !important;
+    border-left-color: rgba(110,118,129,0.3) !important;
+  }
+
+  .markdown-body table th,
+  .markdown-body table td {
+    border-color: rgba(110,118,129,0.12) !important;
+  }
+}
+
+/* Small utility to keep images adaptive */
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+}

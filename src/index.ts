@@ -2,6 +2,7 @@ import * as SDK from "azure-devops-extension-sdk";
 import Mermaid from "mermaid";
 import MermaidViewer from './viewer'
 import test from './test/test'
+// CSS for markdown styling is now included via <link> in index.html and copied during build
 
 console.log("loading...");
 
