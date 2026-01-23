@@ -8,6 +8,7 @@ export default class MermaidViewer {
     private _resizePending: boolean = false;
 
     private requestResize(container?: HTMLElement | null) {
+
         if (this._resizePending) return;
         this._resizePending = true;
 
@@ -35,7 +36,9 @@ export default class MermaidViewer {
 
             try {
                 if (SDK && typeof (SDK.resize) === 'function') {
-                    SDK.resize(width, height);
+
+                    if (window.parent !== window)
+                        SDK.resize(width, height);
                 }
             } catch (_) { }
         };
@@ -92,7 +95,7 @@ export default class MermaidViewer {
         this.initAutoResize(container);
 
         var rawContentCleaned = this.getCleanedContent(rawContent); 
-
+  
         if (rawContentCleaned.includes('```'))
         {
             var parsed = reader.parse(rawContentCleaned);
