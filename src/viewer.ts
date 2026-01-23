@@ -4,38 +4,63 @@ import * as SDK from 'azure-devops-extension-sdk';
 
 export default class MermaidViewer {
 
-    private _resizeObserverInited: boolean = false;
+    private _autoResizeInited: boolean = false;
+    private _resizePending: boolean = false;
 
-    private requestResize() {
-        try {
-            // If Azure DevOps SDK is available, use it to resize the parent frame
-            if (SDK && typeof (SDK.resize) === 'function') {
-                // Try to set a height large enough; SDK.resize will clamp as needed
-                SDK.resize(800, 1200);
-                return;
-            }
-        }
-        catch (_) {}
+    private requestResize(container?: HTMLElement | null) {
+        if (this._resizePending) return;
+        this._resizePending = true;
 
-        // Fallback: post a message to parent to request resize (host can listen)
-        try {
-            const height = document.body.scrollHeight || document.documentElement.scrollHeight;
-            window.parent.postMessage({ type: 'resize', height }, '*');
-        } catch (_) {}
+        const doResize = () => {
+            this._resizePending = false;
 
-        // Setup a MutationObserver once so we notify on content changes
-        if (!this._resizeObserverInited) {
+            const target = container || document.getElementById('viewer-content-display') || document.body;
+            const docEl = document.documentElement;
+
+            const width = Math.max(
+                docEl?.scrollWidth ?? 0,
+                docEl?.clientWidth ?? 0,
+                target?.scrollWidth ?? 0,
+                target?.clientWidth ?? 0,
+                1,
+            );
+
+            const height = Math.max(
+                docEl?.scrollHeight ?? 0,
+                docEl?.clientHeight ?? 0,
+                target?.scrollHeight ?? 0,
+                target?.clientHeight ?? 0,
+                1,
+            );
+
             try {
-                const observer = new MutationObserver(() => {
-                    try {
-                        const h = document.body.scrollHeight || document.documentElement.scrollHeight;
-                        window.parent.postMessage({ type: 'resize', height: h }, '*');
-                    } catch (_) {}
-                });
-                observer.observe(document.getElementById('viewer-content-display') || document.body, { childList: true, subtree: true, characterData: true });
-                this._resizeObserverInited = true;
-            } catch (_) {}
+                if (SDK && typeof (SDK.resize) === 'function') {
+                    SDK.resize(width, height);
+                }
+            } catch (_) { }
+        };
+
+        // Wait a tick so layout/SVG sizes settle.
+        try {
+            requestAnimationFrame(() => setTimeout(doResize, 0));
+        } catch (_) {
+            setTimeout(doResize, 0);
         }
+    }
+
+    private initAutoResize(container: HTMLElement) {
+        if (this._autoResizeInited) return;
+        this._autoResizeInited = true;
+
+        try {
+            const mutationObserver = new MutationObserver(() => this.requestResize(container));
+            mutationObserver.observe(container, { childList: true, subtree: true, characterData: true, attributes: true });
+        } catch (_) { }
+
+        // First sizing once the page is fully loaded.
+        try {
+            window.addEventListener('load', () => this.requestResize(container));
+        } catch (_) { }
     }
 
     private getCleanedContent(rawContent : string) : string
@@ -60,6 +85,11 @@ export default class MermaidViewer {
         console.log(rawContent);
 
         var container = document.getElementById('viewer-content-display');
+        if (!container) {
+            throw new Error("Missing #viewer-content-display container");
+        }
+
+        this.initAutoResize(container);
 
         var rawContentCleaned = this.getCleanedContent(rawContent); 
 
@@ -79,7 +109,15 @@ export default class MermaidViewer {
                 p.classList.add('mermaid')
             })
 
-            Mermaid.run()
+            try {
+                // Mermaid.run can be async depending on version
+                const runResult: any = Mermaid.run();
+                if (runResult && typeof runResult.then === 'function') {
+                    await runResult;
+                }
+            } finally {
+                this.requestResize(container);
+            }
         }
         else
         {
@@ -87,7 +125,7 @@ export default class MermaidViewer {
 
             var graphDefinition = rawContent;
 
-            Mermaid.parseError = function (err, hash) {
+            Mermaid.parseError = (err, hash) => {
                 console.warn("parse error, maybe the syntax is invalid or not contains a mermaid diagram", err, hash);
                 // On parse failure: render the original text as markdown so headers and formatting show
                 const parsed = reader.parse(graphDefinition);
@@ -96,7 +134,7 @@ export default class MermaidViewer {
                 container.classList.add('markdown-body');
                 container.innerHTML = html;
                 // request host to resize the frame so content is fully visible
-                //this.requestResize();
+                this.requestResize(container);
                 // remove the style applied to body, I don't want it in fallback case
                 try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
             };
@@ -113,6 +151,7 @@ export default class MermaidViewer {
                 if (typeof bindFunctions === 'function') {
                     bindFunctions(container);
                 }
+                this.requestResize(container);
             }).catch((err: any) => {
                 console.error('Mermaid render failed:', err);
 
@@ -123,10 +162,13 @@ export default class MermaidViewer {
                 container.classList.add('markdown-body');
                 container.innerHTML = html;
                 // request host to resize the frame so content is fully visible
-                this.requestResize();
+                this.requestResize(container);
                 // remove the style applied to body, I don't want it in fallback case
                 try { const bodyViewer = document.getElementById('body-viewer'); if (bodyViewer) (bodyViewer as HTMLElement).removeAttribute('style'); } catch(_){}
             });
         }
+
+        // Also resize once at the end of renderContent.
+        this.requestResize(container);
     }
 }
