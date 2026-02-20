@@ -1,36 +1,72 @@
 import * as SDK from "azure-devops-extension-sdk";
 import Mermaid from "mermaid";
-import MermaidViewer from './viewer'
-import test from './test/test'
-// CSS for markdown styling is now included via <link> in index.html and copied during build
+import MermaidViewer from "./viewer";
+import test from "./test/test";
+// CSS for markdown styling is now included via <link> in index.html 
 
 console.log("loading...");
 
 const isTest = false;
-const isProduction = process.env.NODE_ENV == 'production'
+const isProduction = process.env.NODE_ENV === "production";
 
-if (!isTest)
-{
+if (!isTest) {
+    bootstrap();
+} else {
+    test.render();
+}
 
-    await (async function() : Promise<void> {
+async function bootstrap(): Promise<void> {
+    try {
+        SDK.init({ loaded: false });
 
-        SDK.init({ loaded: false })
-        Mermaid.initialize({ securityLevel: 'loose', startOnLoad: false });
-
-        await SDK.ready();
-
-        console.log("start");
-
-        SDK.register("mermaid_viewer", function (context) {
-            console.log(context);
-
-            const mermaidViewer = new MermaidViewer();
-            return mermaidViewer;
+        // Mermaid is NOT dependent on ADO auth — initialize early
+        Mermaid.initialize({
+            securityLevel: "loose",
+            startOnLoad: false
         });
 
-        SDK.notifyLoadSucceeded();
+        // Protect against auth / MeProxy issues
+        await withTimeout(SDK.ready(), 8000);
 
-    }());
+        console.log("SDK ready");
+
+        SDK.register("mermaid_viewer", context => {
+            console.log("register context:", context);
+            return new MermaidViewer();
+        });
+
+    } catch (err) {
+        console.error("Extension bootstrap failed:", err);
+
+        /**
+         * IMPORTANT:
+         * We still notify success so the host doesn't keep retrying.
+         * Your viewer can render an error UI if needed.
+         */
+    } finally {
+        SDK.notifyLoadSucceeded();
+        console.log("notifyLoadSucceeded");
+    }
 }
-else
-    test.render();
+
+/**
+ * Utility: timeout wrapper
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error(`Timeout after ${ms}ms`));
+        }, ms);
+
+        promise.then(
+            value => {
+                clearTimeout(timer);
+                resolve(value);
+            },
+            err => {
+                clearTimeout(timer);
+                reject(err);
+            }
+        );
+    });
+}
