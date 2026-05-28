@@ -1,4 +1,4 @@
-import { Parser, HtmlRenderer } from "commonmark"
+import { marked } from "marked";
 import Mermaid from "mermaid";
 import * as SDK from 'azure-devops-extension-sdk';
 
@@ -79,10 +79,15 @@ export default class MermaidViewer {
         return rawContent;
     }
 
-    public async renderContent(rawContent : string, options) {
+    private renderMarkdown(markdownContent: string): string {
+        return marked.parse(markdownContent, {
+            async: false,
+            gfm: true,
+            breaks: false,
+        }) as string;
+    }
 
-        var reader = new Parser();
-        var writer = new HtmlRenderer();
+    public async renderContent(rawContent : string, options) {
 
         console.log("rawContent");
         console.log(rawContent);
@@ -98,9 +103,9 @@ export default class MermaidViewer {
   
         if (rawContentCleaned.includes('```'))
         {
-            var parsed = reader.parse(rawContentCleaned);
-            var resultHtml = writer.render(parsed);
+            var resultHtml = this.renderMarkdown(rawContentCleaned);
 
+            container.classList.add('markdown-body');
             container.innerHTML = resultHtml
             var mermaidParagraphs = container.querySelectorAll('pre > code.language-mermaid')
 
@@ -131,8 +136,7 @@ export default class MermaidViewer {
             Mermaid.parseError = (err, hash) => {
                 console.warn("parse error, maybe the syntax is invalid or not contains a mermaid diagram", err, hash);
                 // On parse failure: render the original text as markdown so headers and formatting show
-                const parsed = reader.parse(graphDefinition);
-                const html = writer.render(parsed);
+                const html = this.renderMarkdown(graphDefinition);
                 // apply markdown styling
                 container.classList.add('markdown-body');
                 container.innerHTML = html;
@@ -150,6 +154,7 @@ export default class MermaidViewer {
             Mermaid.render('graphDiv', graphDefinition).then((result: any) => {
                 const svg = result.svg ?? result;
                 const bindFunctions = result.bindFunctions ?? result?.bindFunctions;
+                container.classList.remove('markdown-body');
                 container.innerHTML = svg;
                 if (typeof bindFunctions === 'function') {
                     bindFunctions(container);
@@ -159,8 +164,7 @@ export default class MermaidViewer {
                 console.error('Mermaid render failed:', err);
 
                 // On render failure: render the original text as markdown so headers and formatting show
-                const parsed = reader.parse(graphDefinition);
-                const html = writer.render(parsed);
+                const html = this.renderMarkdown(graphDefinition);
                 // apply markdown styling
                 container.classList.add('markdown-body');
                 container.innerHTML = html;

@@ -1,44 +1,105 @@
-/* Let the host page background show through */
+html,
+body {
+  background: #ffffff;
+  color: #000000;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Keep GitHub Markdown layout, but make it closer to Azure DevOps' preview. */
 .markdown-body {
   background: transparent !important;
-  color: inherit !important;
+  color: #000000 !important;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+  padding: 8px 10px;
 }
 
-/* Slightly muted code background on light themes */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  border-bottom: 0 !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+}
+
+.markdown-body h1 {
+  font-size: 21px !important;
+  margin: 0 0 12px !important;
+  padding-bottom: 0 !important;
+}
+
+.markdown-body h2 {
+  font-size: 16px !important;
+  margin: 24px 0 8px !important;
+  padding-bottom: 0 !important;
+}
+
+.markdown-body h3 {
+  font-size: 15px !important;
+  margin: 20px 0 8px !important;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body details {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+}
+
+.markdown-body blockquote {
+  border-left: 3px solid #d2d0ce !important;
+  color: #323130 !important;
+  padding: 4px 0 4px 14px !important;
+}
+
+.markdown-body ol,
+.markdown-body ul {
+  padding-left: 34px !important;
+}
+
+.markdown-body li + li {
+  margin-top: 4px !important;
+}
+
+.markdown-body strong {
+  color: #000000 !important;
+}
+
 .markdown-body pre,
 .markdown-body code {
-  background: rgba(27,31,35,0.04);
-  color: inherit;
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #000000 !important;
 }
 
-/* Dark-mode adjustments */
-@media (prefers-color-scheme: dark) {
-  .markdown-body {
-    color: #c9d1d9 !important;
-  }
-
-  .markdown-body a {
-    color: #58a6ff !important;
-  }
-
-  .markdown-body pre,
-  .markdown-body code {
-    background: rgba(110,118,129,0.12) !important;
-    color: #e6edf3 !important;
-  }
-
-  .markdown-body blockquote {
-    color: #8b949e !important;
-    border-left-color: rgba(110,118,129,0.3) !important;
-  }
-
-  .markdown-body table th,
-  .markdown-body table td {
-    border-color: rgba(110,118,129,0.12) !important;
-  }
+.markdown-body table th,
+.markdown-body table td {
+  border-color: #d2d0ce !important;
 }
 
-/* Small utility to keep images adaptive */
+.markdown-body table tr {
+  background-color: #ffffff !important;
+  border-top-color: #d2d0ce !important;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #faf9f8 !important;
+}
+
+.markdown-body a {
+  color: #0078d4 !important;
+}
+
 .markdown-body img {
   max-width: 100%;
   height: auto;
